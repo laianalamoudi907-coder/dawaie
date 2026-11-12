@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dawaie – Prototype</title>
+<style>
+:root{--bg:#f1f6f3;--card:#fff;--tx:#12261d;--mut:#5b6f64;--pri:#13795b;--pri-t:#fff;--soft:#dcefe6;--line:#d5e2db;--warn:#8f5700;--warn-bg:#fff1d6;--bad:#b3261e;--bad-bg:#fde4e1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0d1813;--card:#15261e;--tx:#e6f1ea;--mut:#92a89c;--pri:#4fd1a1;--pri-t:#06261a;--soft:#1c3529;--line:#29433a;--warn:#f2b559;--warn-bg:#3a2d12;--bad:#ff8f86;--bad-bg:#3d1c19}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0d1813;--card:#15261e;--tx:#e6f1ea;--mut:#92a89c;--pri:#4fd1a1;--pri-t:#06261a;--soft:#1c3529;--line:#29433a;--warn:#f2b559;--warn-bg:#3a2d12;--bad:#ff8f86;--bad-bg:#3d1c19}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+#app{max-width:430px;margin:0 auto;min-height:100vh;padding:0 16px 100px}
+h1,h2,h3{margin:0}
+.top{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;display:flex;align-items:center;gap:10px;padding:14px 0 10px}
+.top h1{font-size:20px;flex:1}
+.back{border:0;background:var(--soft);color:var(--tx);width:40px;height:40px;border-radius:12px;font-size:20px;cursor:pointer}
+.sub{color:var(--mut);font-size:14px;margin:0 0 12px}
+.hero{background:var(--pri);color:var(--pri-t);border-radius:20px;padding:16px;margin-bottom:14px}
+.hero b{font-size:22px}
+.prog{height:8px;border-radius:9px;background:rgba(255,255,255,.3);margin-top:10px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--pri-t);border-radius:9px}
+.slot{font-size:14px;color:var(--mut);margin:14px 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
+.dose{display:flex;align-items:center;gap:10px}
+.dose .nm{flex:1;text-align:right;border:0;background:none;color:var(--tx);font:inherit;cursor:pointer;padding:0}
+.dose small{display:block;color:var(--mut)}
+.tm{font-weight:700;color:var(--pri);min-width:48px;direction:ltr}
+.ic{border:1px solid var(--line);background:var(--card);color:var(--mut);width:38px;height:38px;border-radius:12px;font-size:17px;cursor:pointer}
+.ic.on{background:var(--soft);color:var(--pri);border-color:var(--pri)}
+.tick{width:44px;height:44px;border-radius:50%;border:2px solid var(--pri);background:none;color:var(--pri);font-size:22px;cursor:pointer}
+.tick.on{background:var(--pri);color:var(--pri-t)}
+.done .nm{text-decoration:line-through;opacity:.6}
+.badge{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;background:var(--soft);color:var(--pri)}
+.badge.w{background:var(--warn-bg);color:var(--warn)}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:13px;font:inherit;font-weight:700;background:var(--pri);color:var(--pri-t);cursor:pointer}
+.btn.g{background:var(--soft);color:var(--tx)}
+.btn:disabled{opacity:.5}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.al{background:var(--warn-bg);color:var(--warn);border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:6px}
+ul{margin:6px 0 0;padding-inline-start:20px}
+textarea{width:100%;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:inherit;padding:10px;margin:6px 0 8px;min-height:64px}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs div{max-width:430px;margin:0 auto;display:flex}
+.tabs button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-size:13px;padding:10px 0;cursor:pointer}
+.tabs button span{display:block;font-size:20px;line-height:1.2}
+.tabs button.on{color:var(--pri);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}.chip{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:99px;padding:5px 12px;font:inherit;font-size:14px;cursor:pointer}.chip.on{background:var(--pri);color:var(--pri-t);border-color:var(--pri)}
+#app{position:relative}.lgb{position:absolute;top:18px;inset-inline-end:16px;z-index:6;border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:12px;padding:5px 12px;font:inherit;font-size:14px;cursor:pointer}.top{padding-inline-end:70px}html[dir=ltr] button.card,html[dir=ltr] .dose .nm{text-align:left!important}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const M=[
+{n:"ميتفورمين 500 مجم",t:["08:00","20:00"],h:"مع الأكل",left:21,tot:30,refill:true,se:["غثيان","إسهال","طعم معدني في الفم"],av:["الكحول","تخطي الوجبات"]},
+{n:"أملوديبين 5 مجم",t:["09:00"],h:"مرة يوميًا",left:40,tot:90,refill:false,se:["تورم الكاحلين","دوخة","صداع"],av:["عصير الجريب فروت"]},
+{n:"أموكسيسيلين 500 مجم",t:["08:00","14:00","22:00"],h:"كل 8 ساعات",left:4,tot:7,refill:false,se:["طفح جلدي","إسهال","غثيان"],av:["إيقاف الدواء قبل إكمال الكورس"]},
+{n:"أتورفاستاتين 20 مجم",t:["22:00"],h:"قبل النوم",left:55,tot:90,refill:false,se:["آلام في العضلات","اضطراب المعدة"],av:["عصير الجريب فروت","الإفراط في الدهون"]}];
+const SL=[["صباحًا","05:00","12:00"],["ظهرًا","12:00","17:00"],["مساءً","17:00","21:00"],["قبل النوم","21:00","24:00"]];
+let doses=[];function build(){doses=[];M.forEach((m,i)=>m.t.forEach(t=>doses.push({i,t,k:i+"-"+t})));doses.sort((a,b)=>a.t.localeCompare(b.t))}
+build();
+const X=[{n:"باراسيتامول 500 مجم",se:["نادرًا: طفح جلدي"],av:["تجاوز 4 جرعات في اليوم"]},{n:"أزيثروميسين 250 مجم",se:["غثيان","إسهال"],av:["إيقاف الدواء قبل إكمال الكورس"]},{n:"إيبوبروفين 400 مجم",se:["حرقة في المعدة"],av:["تناوله على معدة فارغة"]}];
+const FQ=[["مرة يوميًا",["09:00"]],["مرتين يوميًا",["09:00","21:00"]],["3 مرات يوميًا",["08:00","14:00","22:00"]]];
+let s={tab:"today",d:null,taken:{},off:{},notes:[],refilled:{},shared:false,x:{c:0,f:1,dy:7,r:false,sent:null},rf:null,saved:0};
+const $=x=>document.getElementById(x);
+function tab(t){s.tab=t;s.d=null;s.rf=null;scrollTo(0,0);draw()}
+function det(i){s.d=i;scrollTo(0,0);draw()}
+function tk(k){s.taken[k]=!s.taken[k];draw()}
+function bell(k){s.off[k]=!s.off[k];draw()}
+function addNote(){const v=$("nt").value.trim();if(!v)return;s.notes.push({m:M[s.d].n,x:v});draw()}
+function refill(i){s.rf={i:i,st:'review',v:1};scrollTo(0,0);draw()}
+function share(){s.shared=!s.shared;draw()}
+function doseRow(d){
+ const m=M[d.i],on=s.taken[d.k],al=!s.off[d.k];
+ return `<div class="card dose ${on?"done":""}"><div class="tm">${d.t}</div>
+ <button class="nm" onclick="det(${d.i})"><b>${m.n}</b><small>${m.h}</small></button>
+ <button class="ic ${al?"on":""}" onclick="bell('${d.k}')" aria-label="المنبه">${al?"🔔":"🔕"}</button>
+ <button class="tick ${on?"on":""}" onclick="tk('${d.k}')" aria-label="تم أخذ الجرعة">✓</button></div>`;
+}
+function today(){
+ const n=Object.values(s.taken).filter(Boolean).length;
+ let h=`<div class="top"><h1>دوائي</h1></div>
+ <div class="hero"><div>صباح الخير سارة</div><div style="font-size:13px;opacity:.85">جدول أدويتك حدده د. خالد المطيري، فلا تحتاج تضبط شيئًا</div><b>${n} من ${doses.length} جرعات</b><div class="prog"><i style="width:${n/doses.length*100}%"></i></div></div>`;
+ SL.forEach(([l,a,b])=>{const x=doses.filter(d=>d.t>=a&&d.t<b);if(x.length)h+=`<div class="slot">${l}</div>`+x.map(doseRow).join("")});
+ return h;
+}
+function meds(){
+ return `<div class="top"><h1>أدويتي</h1></div>`+M.map((m,i)=>`<button class="card" style="width:100%;text-align:right;font:inherit;color:var(--tx);cursor:pointer" onclick="det(${i})">
+ <div class="row" style="border:0;padding:0"><b>${m.n}</b>${m.refill&&!s.refilled[i]?'<span class="badge w">يحتاج إعادة صرف</span>':''}</div>
+ <div class="sub" style="margin:4px 0 0">متبقي ${m.left} يوم</div></button>`).join("");
+}
+function detail(){
+ const i=s.d,m=M[i],mine=s.notes.filter(x=>x.m===m.n);
+ return `<div class="top"><button class="back" onclick="det(null)" aria-label="رجوع">›</button><h1>${m.n}</h1></div>
+ <div class="card"><div class="row"><span>مواعيد الجرعات (حددها الطبيب)</span><b>${m.t.join("، ")}</b></div><div class="row"><span>مدة العلاج</span><b>متبقي ${m.left} من ${m.tot} يوم</b></div>
+ <div class="prog" style="background:var(--soft)"><i style="width:${(m.tot-m.left)/m.tot*100}%;background:var(--pri)"></i></div>
+ <div class="row"><span>إعادة الصرف</span>${m.refill?(s.refilled[i]?'<span class="badge">تم الطلب</span>':`<button class="btn" style="width:auto;padding:6px 14px" onclick="refill(${i})">اطلب بدون زيارة</button>`):'<span class="badge">غير مطلوبة</span>'}</div></div>
+ <h3 style="font-size:15px;margin:14px 0 6px">تجنّب أثناء العلاج</h3>${m.av.map(a=>`<div class="al">⚠ ${a}</div>`).join("")}
+ <div class="card"><h3 style="font-size:15px">الأعراض الجانبية المعروفة</h3><ul>${m.se.map(a=>`<li>${a}</li>`).join("")}</ul>
+ <h3 style="font-size:15px;margin-top:14px">ظهر عندك عرض ثاني؟</h3>
+ <textarea id="nt" placeholder="اكتب العرض ومتى بدأ"></textarea><button class="btn g" onclick="addNote()">أضف العرض</button>
+ ${mine.length?`<ul>${mine.map(x=>`<li>${x.x}</li>`).join("")}</ul>`:""}</div>`;
+}
+function shareV(){
+ const n=Object.values(s.taken).filter(Boolean).length;
+ return `<div class="top"><h1>مشاركة مع الطبيب</h1></div>
+ <p class="sub">يشوف د. خالد المطيري ملخص أدويتك وأعراضك قبل الموعد، ويفهم حالتك أسرع.</p>
+ <div class="card"><div class="row"><span>الأدوية الحالية</span><b>${M.length}</b></div>
+ <div class="row"><span>الجرعات اليوم</span><b>${n} من ${doses.length}</b></div>
+ <div class="row"><span>أعراض سجلتها</span><b>${s.notes.length}</b></div></div>
+ ${s.notes.length?`<div class="card"><h3 style="font-size:15px">الأعراض المسجلة</h3><ul>${s.notes.map(x=>`<li>${x.x} <span class="sub">(${x.m})</span></li>`).join("")}</ul></div>`:'<div class="card sub">ما سجلت أعراض بعد. تقدر تضيفها من صفحة أي دواء.</div>'}
+ <button class="btn ${s.shared?"g":""}" onclick="share()">${s.shared?"إيقاف المشاركة":"شارك مع الطبيب"}</button>
+ <p class="sub" style="margin-top:10px">${s.shared?"تمت المشاركة. قد يكتفي الطبيب بمراجعتها بدل موعد إضافي.":"تقدر توقف المشاركة في أي وقت."}</p>`;
+}
+function sx(k,v){s.x[k]=v;s.x.sent=null;draw()}
+function rfDone(){const i=s.rf.i;M[i].left=M[i].tot;s.refilled[i]=true;s.saved++}
+function rfSend(){const i=s.rf.i;if(s.notes.some(x=>x.m===M[i].n)){s.rf.st='call'}else{s.rf.st='ok';rfDone()}scrollTo(0,0);draw()}
+function rfCall(v){s.rf.st='incall';s.rf.v=v;scrollTo(0,0);draw()}
+function rfDecide(c){if(c===1){s.rf.st='ok';rfDone()}else{s.rf.st='chg';s.saved++}scrollTo(0,0);draw()}
+function rfCard(t,d){return `<div class='card' style='text-align:center'><div style='font-size:40px'>✅</div><h3>${t}</h3><p class='sub'>${d}</p></div><button class='btn g' onclick='s.rf=null;draw()'>رجوع لأدويتي</button>`}
+function refV(){
+ const r=s.rf,m=M[r.i],n=s.notes.filter(x=>x.m===m.n).length;let b='';
+ if(r.st==='review')b=`<p class='sub'>بدل زيارة العيادة، يراجع د. خالد معلوماتك عن بعد.</p><div class='card'><h3 style='font-size:15px'>اللي يوصل للطبيب</h3><div class='row'><span>الدواء</span><b>${m.n}</b></div><div class='row'><span>المتبقي</span><b>${m.left} يوم</b></div><div class='row'><span>أعراض سجلتها</span><b>${n}</b></div></div><button class='btn' onclick='rfSend()'>أرسل للطبيب</button>`;
+ if(r.st==='ok')b=rfCard('وافق د. خالد على إعادة الصرف','جُدد علاجك '+m.tot+' يومًا بدون زيارة. ما أخذت موعدًا، فبقي مكانه للحالات الطارئة. مواعيد وفرتها: '+s.saved);
+ if(r.st==='call')b=`<div class='card' style='text-align:center'><div style='font-size:40px'>📞</div><h3>الطبيب يحتاج يسمع منك</h3><p class='sub'>سجلت ${n} عرض مع هذا الدواء، فيحتاج مكالمة قصيرة بدل الزيارة.</p></div><button class='btn' onclick='rfCall(1)'>📹 مكالمة فيديو</button><button class='btn g' style='margin-top:8px' onclick='rfCall(0)'>📞 مكالمة صوتية</button>`;
+ if(r.st==='incall')b=`<div class='card' style='text-align:center;background:var(--tx);color:var(--bg)'><div style='font-size:44px'>${r.v?'📹':'📞'}</div><b>د. خالد المطيري</b><div style='opacity:.8;font-size:14px'>مكالمة ${r.v?'فيديو':'صوتية'} جارية</div></div><div class='card'><h3 style='font-size:15px;margin-bottom:8px'>قرار الطبيب (للعرض فقط)</h3><button class='btn' onclick='rfDecide(1)'>إعادة صرف</button><button class='btn g' style='margin-top:8px' onclick='rfDecide(2)'>تغيير الدواء</button></div>`;
+ if(r.st==='chg')b=rfCard('غيّر الطبيب الدواء','أرسل لك وصفة بديلة بجدولها، وتظهر في جدولك تلقائيًا بدون زيارة. مواعيد وفرتها: '+s.saved);
+ return `<div class='top'><button class='back' onclick='s.rf=null;draw()' aria-label='رجوع'>›</button><h1>إعادة صرف بدون زيارة</h1></div>`+b;
+}
+function send(){const d=X[s.x.c],f=FQ[s.x.f];if(M.some(m=>m.n===d.n))return;M.push({n:d.n,t:f[1],h:f[0],left:s.x.dy,tot:s.x.dy,refill:s.x.r,se:d.se,av:d.av});build();s.x.sent=d.n;draw()}
+function ch(k,arr,cur){return `<div class="chips">${arr.map(([l,v])=>`<button class="chip ${cur===v?"on":""}" onclick="sx('${k}',${v})">${l}</button>`).join("")}</div>`}
+function docV(){
+ const x=s.x,dup=M.some(m=>m.n===X[x.c].n);
+ return `<div class="top"><h1>وصفة جديدة (الطبيب)</h1></div>
+ <p class="sub">د. خالد يكتب الدواء والجدول مرة وحدة، وتوصل لسارة جاهزة بمنبهاتها.</p>
+ <div class="card"><div class="slot" style="margin:0">الدواء</div>${ch("c",X.map((d,i)=>[d.n,i]),x.c)}
+ <div class="slot" style="margin:0">عدد المرات والأوقات</div>${ch("f",FQ.map((f,i)=>[f[0],i]),x.f)}
+ <div class="slot" style="margin:0">مدة العلاج بالأيام</div>${ch("dy",[3,5,7,14].map(d=>[d,d]),x.dy)}
+ <div class="slot" style="margin:0">إعادة الصرف</div>${ch("r",[["بدون",false],["مع إعادة صرف",true]],x.r)}
+ <div class="sub">الأوقات: ${FQ[x.f][1].join("، ")}</div>
+ <button class="btn" ${dup?"disabled":""} onclick="send()">${dup?"الدواء موجود في جدولها":"أرسل الوصفة للمريضة"}</button></div>
+ ${x.sent?`<div class="al" style="background:var(--soft);color:var(--pri)">وصل ${x.sent} لجدول سارة تلقائيًا، وانضبطت المنبهات ✓</div>`:""}`;
+}
+let LG='en';
+function lg(){LG=LG==='en'?'ar':'en';draw()}
+const E={'دوائي':'Dawaie','صباح الخير سارة':'Good morning, Sara','جدول أدويتك حدده د. خالد المطيري، فلا تحتاج تضبط شيئًا':'Your schedule was set by Dr. Khalid Al-Mutairi, so there is nothing to set up','صباحًا':'Morning','ظهرًا':'Afternoon','مساءً':'Evening','قبل النوم':'Bedtime','المنبه':'Alarm','تم أخذ الجرعة':'Mark dose as taken','رجوع':'Back','مع الأكل':'With food','مرة يوميًا':'Once daily','مرتين يوميًا':'Twice daily','3 مرات يوميًا':'3 times daily','كل 8 ساعات':'Every 8 hours','أدويتي':'My Meds','يحتاج إعادة صرف':'Refill needed','مواعيد الجرعات (حددها الطبيب)':'Dose times (set by your doctor)','مدة العلاج':'Treatment duration','إعادة الصرف':'Refill','اطلب بدون زيارة':'Request without a visit','تم الطلب':'Requested','غير مطلوبة':'Not needed','تجنّب أثناء العلاج':'Avoid during treatment','الأعراض الجانبية المعروفة':'Known side effects','ظهر عندك عرض ثاني؟':'Another symptom?','اكتب العرض ومتى بدأ':'Describe the symptom and when it started','أضف العرض':'Add symptom','مشاركة مع الطبيب':'Share with doctor','يشوف د. خالد المطيري ملخص أدويتك وأعراضك قبل الموعد، ويفهم حالتك أسرع.':'Dr. Khalid Al-Mutairi sees your medication and symptom summary before the visit and understands your case faster.','الأدوية الحالية':'Current medications','الجرعات اليوم':'Doses today','أعراض سجلتها':'Symptoms you logged','الأعراض المسجلة':'Logged symptoms','ما سجلت أعراض بعد. تقدر تضيفها من صفحة أي دواء.':'No symptoms logged yet. You can add them from any medication page.','إيقاف المشاركة':'Stop sharing','شارك مع الطبيب':'Share with doctor','تمت المشاركة. قد يكتفي الطبيب بمراجعتها بدل موعد إضافي.':'Shared. The doctor may review it instead of booking an extra visit.','تقدر توقف المشاركة في أي وقت.':'You can stop sharing at any time.','اليوم':'Today','الطبيب':'Doctor','وصفة':'Rx','وصفة جديدة (الطبيب)':'New prescription (Doctor)','د. خالد يكتب الدواء والجدول مرة وحدة، وتوصل لسارة جاهزة بمنبهاتها.':'Dr. Khalid writes the drug and schedule once, and it reaches Sara ready with alarms.','الدواء':'Medication','عدد المرات والأوقات':'Frequency and times','مدة العلاج بالأيام':'Duration in days','بدون':'None','مع إعادة صرف':'With refill','الدواء موجود في جدولها':'Already in her schedule','أرسل الوصفة للمريضة':'Send prescription to patient','نادرًا: طفح جلدي':'Rarely: skin rash','تجاوز 4 جرعات في اليوم':'Exceeding 4 doses a day','غثيان':'Nausea','إسهال':'Diarrhea','إيقاف الدواء قبل إكمال الكورس':'Stopping before finishing the course','حرقة في المعدة':'Heartburn','تناوله على معدة فارغة':'Taking it on an empty stomach','طعم معدني في الفم':'Metallic taste in the mouth','تورم الكاحلين':'Ankle swelling','دوخة':'Dizziness','صداع':'Headache','طفح جلدي':'Skin rash','آلام في العضلات':'Muscle pain','اضطراب المعدة':'Upset stomach','الكحول':'Alcohol','تخطي الوجبات':'Skipping meals','عصير الجريب فروت':'Grapefruit juice','الإفراط في الدهون':'Excess fatty food','إعادة صرف بدون زيارة':'Refill without a visit','بدل زيارة العيادة، يراجع د. خالد معلوماتك عن بعد.':'Instead of visiting the clinic, Dr. Khalid reviews your information remotely.','اللي يوصل للطبيب':'What the doctor receives','المتبقي':'Remaining','أرسل للطبيب':'Send to doctor','وافق د. خالد على إعادة الصرف':'Dr. Khalid approved the refill','الطبيب يحتاج يسمع منك':'The doctor needs to hear from you','مكالمة فيديو':'Video call','مكالمة صوتية':'Audio call','د. خالد المطيري':'Dr. Khalid Al-Mutairi','قرار الطبيب (للعرض فقط)':'Doctor’s decision (demo only)','إعادة صرف':'Refill','تغيير الدواء':'Change medication','غيّر الطبيب الدواء':'The doctor changed the medication','رجوع لأدويتي':'Back to my meds'};
+const DN={'ميتفورمين':'Metformin','أملوديبين':'Amlodipine','أموكسيسيلين':'Amoxicillin','أتورفاستاتين':'Atorvastatin','باراسيتامول':'Paracetamol','أزيثروميسين':'Azithromycin','إيبوبروفين':'Ibuprofen'};
+const R=[[/^متبقي (\d+) من (\d+) يوم$/,'$1 of $2 days left'],[/^متبقي (\d+) يوم$/,'$1 days left'],[/^(\d+) من (\d+) جرعات$/,'$1 of $2 doses'],[/^(\d+) من (\d+)$/,'$1 of $2'],[/^(\d+) يوم$/,'$1 days'],[/^(\S+) (\d+) مجم$/,(x,a,b)=>(DN[a]||a)+' '+b+' mg'],[/^\((.+)\)$/,(x,a)=>'('+tr(a)+')'],[/^الأوقات: (.+)$/,'Times: $1'],[/^وصل (.+) لجدول سارة تلقائيًا، وانضبطت المنبهات ✓$/,(x,a)=>tr(a)+' reached Sara’s schedule automatically, alarms are set ✓'],[/^جُدد علاجك (\d+) يومًا بدون زيارة\. ما أخذت موعدًا، فبقي مكانه للحالات الطارئة\. مواعيد وفرتها: (\d+)$/,'Your treatment is renewed for $1 days with no visit. You did not book an appointment, so that slot stays open for emergencies. Appointments saved: $2'],[/^أرسل لك وصفة بديلة بجدولها، وتظهر في جدولك تلقائيًا بدون زيارة\. مواعيد وفرتها: (\d+)$/,'A replacement prescription with its schedule was sent and appears in your schedule automatically, no visit needed. Appointments saved: $1'],[/^سجلت (\d+) عرض مع هذا الدواء، فيحتاج مكالمة قصيرة بدل الزيارة\.$/,'You logged $1 symptom(s) with this drug, so a short call is needed instead of a visit.'],[/^مكالمة (فيديو|صوتية) جارية$/,(x,a)=>(a==='فيديو'?'Video':'Audio')+' call in progress']];
+function tr(s){
+ if(E[s])return E[s];
+ for(const r of R)if(r[0].test(s))return s.replace(r[0],r[1]);
+ const m=s.match(/^([^\u0600-\u06FF0-9]+)(.+)$/);
+ if(m&&/[\u0600-\u06FF]/.test(m[2]))return m[1]+tr(m[2]);
+ return s;
+}
+function applyLang(){
+ const en=LG==='en',d=document.documentElement;
+ d.lang=LG;d.dir=en?'ltr':'rtl';
+ document.title=en?'Dawaie – Prototype':'دوائي – نموذج أولي';
+ if(!en)return;
+ const a=$('app'),w=document.createTreeWalker(a,NodeFilter.SHOW_TEXT),ns=[];
+ while(w.nextNode())ns.push(w.currentNode);
+ ns.forEach(n=>{const v=n.nodeValue;if(!/[\u0600-\u06FF]/.test(v))return;n.nodeValue=v.replace(/^(\s*)([\s\S]*?)(\s*)$/,(x,p,q,r)=>p+tr(q).replace(/،/g,',').replace(/؟/g,'?')+r)});
+ a.querySelectorAll('[aria-label],[placeholder]').forEach(e=>['aria-label','placeholder'].forEach(k=>{const v=e.getAttribute(k);if(v)e.setAttribute(k,tr(v))}));
+ a.querySelectorAll('.back').forEach(b=>b.textContent='‹');
+}
+function draw(){
+ const a=$("app");
+ let h=s.rf?refV():s.d!==null?detail():s.tab==="today"?today():s.tab==="meds"?meds():s.tab==="doc"?docV():shareV();
+ const T=[["today","💊","اليوم"],["meds","📋","أدويتي"],["share","🩺","الطبيب"],["doc","✍️","وصفة"]];
+ h+=`<nav class="tabs"><div>${T.map(([k,e,l])=>`<button class="${s.tab===k&&s.d===null?"on":""}" onclick="tab('${k}')"><span>${e}</span>${l}</button>`).join("")}</div></nav>`;
+ a.innerHTML=`<button class='lgb' onclick='lg()'>${LG==='en'?'عربي':'EN'}</button>`+h;applyLang();
+}
+draw();
+</script>
+</body>
+</html>
